@@ -1,0 +1,30 @@
+name: Terraform Apply
+
+# Trigger when pushed to MAIN Branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+# Set TERRAFORM CLI
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.6.0
+
+# Terraform Init and Apply achieved 
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Apply Terraform changes
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_pwd: ${{ secrets.TF_VAR_pwd }}
